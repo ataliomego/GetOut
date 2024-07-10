@@ -1,9 +1,14 @@
+import os
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import Updater, CommandHandler, MessageHandler, Filters, CallbackQueryHandler, CallbackContext
 from PIL import Image
 import os
 
-TOKEN = 'YOUR_TELEGRAM_BOT_TOKEN'
+# Mendapatkan token dari environment variable
+TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+
+if not TOKEN:
+    raise ValueError("No TELEGRAM_BOT_TOKEN set for the bot")
 
 def start(update: Update, context: CallbackContext) -> None:
     disclaimer_text = (
@@ -43,16 +48,16 @@ def button(update: Update, context: CallbackContext) -> None:
         img = Image.open(photo_path)
         img_format = img.format
         output_path = f'FioreProject-{os.path.basename(photo_path)}'
-        
+
         img.save(output_path, format=img_format, optimize=True, quality=85)
-        
+
         while os.path.getsize(output_path) > size * 1024:
             img = Image.open(output_path)
             img.save(output_path, format=img_format, optimize=True, quality=img.info['quality'] - 5)
-        
+
         with open(output_path, 'rb') as f:
             query.message.reply_document(f, filename=os.path.basename(output_path))
-        
+
         os.remove(output_path)
         os.remove(photo_path)
     else:

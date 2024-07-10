@@ -4,7 +4,7 @@ from telegram.ext import ApplicationBuilder, CommandHandler, MessageHandler, fil
 from PIL import Image
 
 # Mendapatkan token dari environment variable
-TOKEN = os.getenv('TELEGRAM_BOT_TOKEN')
+TOKEN ='7348539116:AAFpTUMrAOurUk_DhVYKSwiNE5GuhR8Wk40'
 
 if not TOKEN:
     raise ValueError("No TELEGRAM_BOT_TOKEN set for the bot")
